@@ -57,7 +57,7 @@ const psWebhookClient = new WebhookClient({ url: process.env.PS_WEBHOOK_URL }),
         embeds: [UpdateEmbed],
       });
       await setTimeout(600000); //10 minutes
-      if (!psIO.connected) {
+      if (!xboxIO.connected) {
         //if it is still down after 10 minutes then it crashed
         await xboxWebhookClient.send({
           embeds: [OutageEmbed],
