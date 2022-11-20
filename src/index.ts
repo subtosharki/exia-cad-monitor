@@ -3,6 +3,10 @@ import { io } from 'socket.io-client';
 import { setTimeout } from 'timers/promises';
 import 'dotenv/config';
 
+// to avoid cad online message every bot restart
+let psFirstCon = true,
+  xboxFirstCon = true;
+
 const psWebhookClient = new WebhookClient({ url: process.env.PS_WEBHOOK_URL }),
   xboxWebhookClient = new WebhookClient({ url: process.env.XBOX_WEBHOOK_URL }),
   psLogClient = new WebhookClient({ url: process.env.PS_LOG_WEBHOOK_URL }),
@@ -29,7 +33,7 @@ const psWebhookClient = new WebhookClient({ url: process.env.PS_WEBHOOK_URL }),
   UpEmbed = new EmbedBuilder()
     .setTitle('CAD Online')
     .setDescription(
-      'The CAD is now online and operational, thank you for your patience',
+      'The CAD is now online and operational. Thank you for your patience.',
     )
     .setFooter({ text: 'ExiaRoleplay CAD Monitor' })
     .setTimestamp()
@@ -44,13 +48,15 @@ const psWebhookClient = new WebhookClient({ url: process.env.PS_WEBHOOK_URL }),
       await setTimeout(600000); //10 minutes
       if (!psIO.connected) {
         //if it is still down after 10 minutes then it crashed
-        await psWebhookClient.send({
-          embeds: [OutageEmbed],
-        });
-        await psLogClient.send({
-          embeds: [OutageEmbed],
-          content: '@everyone',
-        });
+        Promise.all([
+          psWebhookClient.send({
+            embeds: [OutageEmbed],
+          }),
+          psLogClient.send({
+            embeds: [OutageEmbed],
+            content: '@everyone',
+          }),
+        ]);
       }
     } else {
       //assume im updating at first
@@ -60,13 +66,15 @@ const psWebhookClient = new WebhookClient({ url: process.env.PS_WEBHOOK_URL }),
       await setTimeout(600000); //10 minutes
       if (!xboxIO.connected) {
         //if it is still down after 10 minutes then it crashed
-        await xboxWebhookClient.send({
-          embeds: [OutageEmbed],
-        });
-        await xboxLogClient.send({
-          embeds: [OutageEmbed],
-          content: '@everyone',
-        });
+        Promise.all([
+          xboxWebhookClient.send({
+            embeds: [OutageEmbed],
+          }),
+          xboxLogClient.send({
+            embeds: [OutageEmbed],
+            content: '@everyone',
+          }),
+        ]);
       }
     }
   },
@@ -83,6 +91,10 @@ const psWebhookClient = new WebhookClient({ url: process.env.PS_WEBHOOK_URL }),
   };
 
 psIO.on('connect', async () => {
+  if (psFirstCon) {
+    psFirstCon = false;
+    return;
+  }
   await upHandler('ps');
 });
 psIO.on('disconnect', async () => {
@@ -90,6 +102,10 @@ psIO.on('disconnect', async () => {
 });
 
 xboxIO.on('connect', async () => {
+  if (xboxFirstCon) {
+    xboxFirstCon = false;
+    return;
+  }
   await upHandler('xbox');
 });
 xboxIO.on('disconnect', async () => {
