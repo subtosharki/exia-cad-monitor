@@ -1,0 +1,25 @@
+{
+  "name": "exia-cad-monitor",
+  "version": "1.0.0",
+  "description": "a system to watch the exia cads and if they are offline to send an alert to the development updates",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "format": "prettier --write \"src/**/*.ts\""
+  },
+  "repository": "git+https://github.com/subtosharki/exia-cad-monitor.git",
+  "author": "subtosharki",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/subtosharki/exia-cad-monitor/issues"
+  },
+  "homepage": "https://github.com/subtosharki/exia-cad-monitor#readme",
+  "dependencies": {
+    "discord.js": "^14.6.0",
+    "socket.io-client": "^4.5.3",
+    "wait": "https://github.com/subtosharki/waitjs"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.3"
+  }
+}
