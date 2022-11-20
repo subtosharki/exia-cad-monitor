@@ -1,6 +1,7 @@
 import { WebhookClient, EmbedBuilder } from 'discord.js';
 import { io } from 'socket.io-client';
 import { setTimeout } from 'timers/promises';
+import 'dotenv/config';
 
 const psWebhookClient = new WebhookClient({ url: process.env.PS_WEBHOOK_URL }),
   xboxWebhookClient = new WebhookClient({ url: process.env.XBOX_WEBHOOK_URL }),
