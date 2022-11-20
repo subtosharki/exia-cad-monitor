@@ -1,6 +1,6 @@
 import { WebhookClient, EmbedBuilder } from 'discord.js';
 import { io } from 'socket.io-client';
-import wait from 'wait';
+import { setTimeout } from 'timers/promises';
 
 const psWebhookClient = new WebhookClient({ url: process.env.PS_WEBHOOK_URL }),
   xboxWebhookClient = new WebhookClient({ url: process.env.XBOX_WEBHOOK_URL }),
@@ -40,7 +40,7 @@ const psWebhookClient = new WebhookClient({ url: process.env.PS_WEBHOOK_URL }),
       await psWebhookClient.send({
         embeds: [UpdateEmbed],
       });
-      await wait(600000); //10 minutes
+      await setTimeout(600000); //10 minutes
       if (!psIO.connected) {
         //if it is still down after 10 minutes then it crashed
         await psWebhookClient.send({
@@ -56,7 +56,7 @@ const psWebhookClient = new WebhookClient({ url: process.env.PS_WEBHOOK_URL }),
       await xboxWebhookClient.send({
         embeds: [UpdateEmbed],
       });
-      await wait(600000); //10 minutes
+      await setTimeout(600000); //10 minutes
       if (!psIO.connected) {
         //if it is still down after 10 minutes then it crashed
         await xboxWebhookClient.send({
