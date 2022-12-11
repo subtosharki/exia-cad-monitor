@@ -15,7 +15,7 @@
   },
   "homepage": "https://github.com/subtosharki/exia-cad-monitor#readme",
   "dependencies": {
-    "discord.js": "^14.6.0",
+    "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "socket.io-client": "^4.5.4"
   },
